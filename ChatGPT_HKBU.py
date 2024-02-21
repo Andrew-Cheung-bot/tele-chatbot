@@ -3,11 +3,12 @@ import requests
 class HKBU_ChatGPT():
 
     def __init__(self,config_path='./config.ini'):
-        if type(config_) == str:
+        if type(config_path) == str:
             self.config = configparser.ConfigParser()
-            self.config.read(config_)
+            self.config.read(config_path)
         elif type(self.config) == configparser.ConfigParser:
-            self.config = config_
+            self.config = config_path
+
     def submit(self,message):
         conversation = [{"role": "user", "content": message}]
         url = (self.config['CHATGPT']['BASICURL']) +\

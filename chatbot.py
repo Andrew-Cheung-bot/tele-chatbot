@@ -27,7 +27,7 @@ def main():
 
     # dispatcher for chatgpt
     global chatgpt
-    chatgpt = HKBU_ChatGPT(config)
+    chatgpt = HKBU_ChatGPT()
     chatgpt_handler = MessageHandler(Filters.text & (~Filters.command),
     equiped_chatgpt)
     dispatcher.add_handler(chatgpt_handler)
@@ -35,6 +35,7 @@ def main():
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("add", add))
     dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("hello", hello))
     # To start the bot:
     updater.start_polling()
     updater.idle()
@@ -69,5 +70,14 @@ def equiped_chatgpt(update, context):
     logging.info("context: " + str(context))
     context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
 
+def hello(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /hello is issued."""
+    try:
+        # Extract username from command arguments
+        name = context.args[0]
+        update.message.reply_text('Good day, {}!'.format(name))
+    except IndexError:
+        update.message.reply_text('Usage: /hello <username>')
+  
 if __name__ == '__main__':
     main()
